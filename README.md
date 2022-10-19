@@ -1,7 +1,7 @@
 # 福建制霸生成器
 福建城市制霸标记生成工具
 
-https://lab.magiconch.com/china-ex/
+https://fujian-ex.netlify.app/
 
 ## 功能
 可以在线标记 居住、短居、游玩、出差、路过 标记后可生成图片进行社区分享
