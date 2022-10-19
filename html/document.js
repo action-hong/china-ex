@@ -166,14 +166,13 @@ const 保存图像 = _=>{
             0,(宽 - 高) * 比 / 2,
             宽 * 比, 高 * 比
         );
-        // return 下载文件(画板.toDataURL(),`[神奇海螺][中国制霸]${+new Date()}.png`,保存);
         画板.toBlob(元素数据=>{
             const 地址 = URL.createObjectURL(元素数据);
             输出图像.querySelector('img').src = 地址;
             输出图像样式.display = '';
 
             设置延时(_=>{
-                下载文件(地址,`[神奇海螺][中国制霸]${+new Date()}.png`);
+                下载文件(地址,`[福建制霸]${+new Date()}.png`);
                 如何做爱元素.removeAttribute('data-running');
             },50)
         },'image/png');
