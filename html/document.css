@@ -35,7 +35,7 @@ a {
   background-color: #FF7E7E;
 }
 
-#设置等级 {
+#set_level {
   display: none;
   position: absolute;
   z-index: 1;
@@ -48,7 +48,7 @@ a {
   text-align: center;
 }
 
-#设置等级 h2 {
+#set_level h2 {
   margin: 0;
   font-weight: normal;
   font-size: 26px;
@@ -56,39 +56,39 @@ a {
   cursor: default;
 }
 
-#设置等级 a {
+#set_level a {
   line-height: 24px;
   cursor: pointer;
 }
 
-#设置等级 h2,
-#设置等级 a {
+#set_level h2,
+#set_level a {
   display: block;
   padding: 4px 10px;
 }
 
-#设置等级 h2[data-level="5"],
-#设置等级 a[data-level="5"] {
+#set_level h2[data-level="5"],
+#set_level a[data-level="5"] {
   background: #FF7E7E;
 }
 
-#设置等级 h2[data-level="4"],
-#设置等级 a[data-level="4"] {
+#set_level h2[data-level="4"],
+#set_level a[data-level="4"] {
   background: #FFB57E;
 }
 
-#设置等级 h2[data-level="3"],
-#设置等级 a[data-level="3"] {
+#set_level h2[data-level="3"],
+#set_level a[data-level="3"] {
   background: #FFE57E;
 }
 
-#设置等级 h2[data-level="2"],
-#设置等级 a[data-level="2"] {
+#set_level h2[data-level="2"],
+#set_level a[data-level="2"] {
   background: #A8FFBE;
 }
 
-#设置等级 h2[data-level="1"],
-#设置等级 a[data-level="1"] {
+#set_level h2[data-level="1"],
+#set_level a[data-level="1"] {
   background: #88AEFF;
 }
 
@@ -166,17 +166,17 @@ footer a.按钮 {
     box-shadow: 0 0 0 2px #111;
   }
 
-  #设置等级 {
+  #set_level {
     width: 110px;
     border-width: 2px;
   }
 
-  #设置等级 h2 {
+  #set_level h2 {
     font-size: 18px;
     line-height: 30px;
   }
 
-  #设置等级 a {
+  #set_level a {
     font-size: 14px;
     line-height: 18px;
   }

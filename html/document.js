@@ -2,32 +2,28 @@ const rootElement = document.documentElement;
 const bodyElement = document.body;
 const headElement = document.head;
 
-// create a new element
-const newAElement = name => document.createElement(name);
+const newAnElement = name => document.createElement(name);
 const newAnImage = _ => new Image();
+
 // recall: 回调
 const addEventListener = (element, event, recall) => element[`on${event}`] = recall;// element.addEventListener(event,recall);
 const getElementLocation = element => element.getBoundingClientRect();
 
-// `设置等级`是那个点击block出来的弹窗
-const setLevelTitle = 设置等级.children[0];
-
-
+// `set_level`是那个点击block出来的弹窗
+const setLevelTitle = set_level.children[0];
 
 const data = {};
-const getAllChildrenBlocks = _ => [...地区.children];
+
+
+const getAllChildrenBlocks = _ => [...blocks.children];
 const getAllChildrenBlockLevels = _ => getAllChildrenBlocks().map(element => +element.getAttribute('level') || 0);
-const localStorageLevelKey = 'china-ex-levels';
-const saveLevels = _ => {
-    localStorage.setItem(localStorageLevelKey, getAllChildrenBlockLevels().join(''));
-};
 
 const graph = bodyElement.children[0];
-const setLevelStyle = 设置等级.style;
+const setLevelStyle = set_level.style;
 const minGap = 6;
 
 // 点击每个block的时候
-addEventListener(地区, 'click', event => {
+addEventListener(blocks, 'click', event => {
     event.stopPropagation();
 
     const { target: childElement } = event;
@@ -40,17 +36,14 @@ addEventListener(地区, 'click', event => {
     setLevelTitle.innerHTML = id;
     setLevelStyle.display = 'block';
     // 小弹窗的位置
-    const setLevelElementLocation = getElementLocation(设置等级);
+    const setLevelElementLocation = getElementLocation(set_level);
 
     let x = Math.round(rootElement.scrollLeft + childElementLecation.left + childElementLecation.width / 2 - setLevelElementLocation.width / 2);
     x = Math.min(
         x,
         bodyElement.offsetWidth - setLevelElementLocation.width - minGap
     );
-    x = Math.max(
-        x,
-        minGap
-    );
+    x = Math.max(x, minGap);
     // console.log(x);
 
     let y = Math.round(rootElement.scrollTop + childElementLecation.top + childElementLecation.height / 2 - setLevelElementLocation.height / 2);
@@ -69,11 +62,7 @@ addEventListener(地区, 'click', event => {
 });
 
 
-// 在level弹窗展示的时候/或者不展示，点击别的地方就会把弹窗关掉。
-const closeLevelWindow = _ => {
-    setLevelStyle.display = '';
-};
-addEventListener(document, 'click', closeLevelWindow);
+
 
 // add the new current score
 const computeScore = _ => {
@@ -83,11 +72,24 @@ const computeScore = _ => {
     分数.innerHTML = `分数: ${score}`;
 }
 
-// 在level弹窗展示的时候，点击，可以设置level。
-// 设置完了计分，关闭弹窗，保存level
-addEventListener(设置等级, 'click', event => {
-    // 阻止事件冒泡到父元素
+// when level window showing, click other place to close it.
+const closeLevelWindow = _ => {
+    setLevelStyle.display = '';
+};
+addEventListener(document, 'click', closeLevelWindow);
+
+// key to level info, saved locally
+const localStorageLevelKey = 'language-ex-levels';
+const saveLevels = _ => {
+    localStorage.setItem(localStorageLevelKey, getAllChildrenBlockLevels().join(''));
+};
+
+// when level window is showing, click to set level.
+// then close the window and save level
+addEventListener(set_level, 'click', event => {
+    // keep event from parent element
     event.stopPropagation();
+
     const level = event.target.getAttribute('data-level');
     if (!level) return false;
     data.childElement.setAttribute('level', level);
@@ -130,10 +132,10 @@ const getFontStyle = (fontName, recall) => {
     };`));
 };
 
-getFontStyle('slice', 样式字串 => {
-    graph.querySelector('style').innerHTML = 样式字串;
-    const styleElement = newAElement('style');
-    styleElement.innerHTML = 样式字串;
+getFontStyle('slice', styleString => {
+    graph.querySelector('style').innerHTML = styleString;
+    const styleElement = newAnElement('style');
+    styleElement.innerHTML = styleString;
     headElement.appendChild(styleElement);
     setTimeout(_ => rootElement.removeAttribute('data-loading'), 2e3);
 });
@@ -142,7 +144,7 @@ const width = 1134;
 const height = 976;
 const ratio = 2;
 
-const canvas = newAElement('canvas');
+const canvas = newAnElement('canvas');
 
 canvas.width = width * ratio;
 canvas.height = width * ratio;
@@ -155,14 +157,14 @@ const newImageFromText = text => {
 };
 const isSocialMedia = /weibo|qq/i.test(navigator.userAgent);
 
-const downloadFile = (link, fileName, element = newAElement('a')) => {
+const downloadFile = (link, fileName, element = newAnElement('a')) => {
     if (!isSocialMedia) {
         element.download = fileName;
     }
     element.href = link;
     element.click();
 };
-const 地址变图像元素 = (address, recall) => {
+const addressToImageElement = (address, recall) => {
     const image = newAnImage();
     addEventListener(image, 'load', _ => setTimeout(_ => recall(image), 500));
     image.src = address;
@@ -175,10 +177,10 @@ const saveImage = _ => {
     rootElement.setAttribute('data-running', 'true');
 
     const text = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}px" height="${height}px">${graph.innerHTML}</svg>`;
-    const 数据地址 = newImageFromText(text);
-    // open(数据地址);
+    const dataAddress = newImageFromText(text);
+    // open(dataAddress);
     // return ;
-    地址变图像元素(数据地址, image => {
+    addressToImageElement(dataAddress, image => {
         context.fillStyle = '#efb4b4';
         context.fillRect(
             0, 0,
@@ -209,8 +211,8 @@ addEventListener(save_pic, 'click', saveImage);
 // 按钮保存图片 *******************************************************
 
 
-// 关闭按钮被点击时候关闭 **********************************************
+// 关闭按钮被点击时候关闭保存图片窗口 ***********************************
 addEventListener(output_image.querySelector('a'), 'click', _ => {
     outputImageStyle.display = 'none'
 });
-// 关闭按钮被点击时候关闭 **********************************************
+// 关闭按钮被点击时候关闭保存图片窗口 ***********************************
