@@ -104,7 +104,7 @@ const getLevelsAndExecute = _ => {
     if (!blockLevelRegex.test(levelsString)) return;
     // split and become level array
     const levels = levelsString.split('');
-    // for eache block, set level and of course the color will be set
+    // for each block, set level and of course the color will be set
     getAllChildrenBlocks().forEach((element, index) => {
         element.setAttribute('level', levels[index])
     })
@@ -113,25 +113,28 @@ const getLevelsAndExecute = _ => {
 getLevelsAndExecute();
 computeScore();
 
-const 读文件成地址 = (originalData, recall) => {
-    const 读 = new FileReader();
-    读.onload = event => recall(event.target.result);
-    读.readAsDataURL(originalData);
+const readAddressFromFile = (originalData, recall) => {
+    const fileReader = new FileReader();
+    fileReader.onload = event => recall(event.target.result);
+    fileReader.readAsDataURL(originalData);
 };
-const 获取字体数据地址 = (address, recall) => {
-    fetch(address).then(资源 => 资源.blob()).then(originalData => 读文件成地址(originalData, recall));
+
+const getFontDataAddress = (address, recall) => {
+    fetch(address).then(resource => resource.blob()).then(originalData => readAddressFromFile(originalData, recall));
 };
-const 获取字体样式 = (字体名, recall) => {
-    获取字体数据地址(`${字体名}.woff?v=a`, address => recall(`@font-face {
-        font-family: ${字体名};
+
+const getFontStyle = (fontName, recall) => {
+    getFontDataAddress(`${fontName}.woff?v=a`, address => recall(`@font-face {
+        font-family: ${fontName};
         src: url(${address});
     };`));
 };
-获取字体样式('slice', 样式字串 => {
+
+getFontStyle('slice', 样式字串 => {
     graph.querySelector('style').innerHTML = 样式字串;
-    const 样式元素 = newAElement('style');
-    样式元素.innerHTML = 样式字串;
-    headElement.appendChild(样式元素);
+    const styleElement = newAElement('style');
+    styleElement.innerHTML = 样式字串;
+    headElement.appendChild(styleElement);
     setTimeout(_ => rootElement.removeAttribute('data-loading'), 2e3);
 });
 
@@ -151,7 +154,7 @@ const newImageFromText = text => {
     return URL.createObjectURL(originalData);
 };
 const isSocialMedia = /weibo|qq/i.test(navigator.userAgent);
-// alert(navigator.userAgent)
+
 const downloadFile = (link, fileName, element = newAElement('a')) => {
     if (!isSocialMedia) {
         element.download = fileName;
@@ -160,12 +163,13 @@ const downloadFile = (link, fileName, element = newAElement('a')) => {
     element.click();
 };
 const 地址变图像元素 = (address, recall) => {
-    const 图 = newAnImage();
-    addEventListener(图, 'load', _ => setTimeout(_ => recall(图), 500));
-    图.src = address;
+    const image = newAnImage();
+    addEventListener(image, 'load', _ => setTimeout(_ => recall(image), 500));
+    image.src = address;
 };
 const log = _ => (newAnImage()).src = `https://lab.magiconch.com/api/china-ex/log?levels=${getAllChildrenBlockLevels().join('')}`;
 
+// 按钮保存图片 *******************************************************
 const outputImageStyle = output_image.style;
 const saveImage = _ => {
     rootElement.setAttribute('data-running', 'true');
@@ -174,14 +178,14 @@ const saveImage = _ => {
     const 数据地址 = newImageFromText(text);
     // open(数据地址);
     // return ;
-    地址变图像元素(数据地址, 图 => {
+    地址变图像元素(数据地址, image => {
         context.fillStyle = '#efb4b4';
         context.fillRect(
             0, 0,
             width * ratio, width * ratio
         );
         context.drawImage(
-            图,
+            image,
             0, 0,
             width, height,
             0, (width - height) * ratio / 2,
@@ -201,8 +205,12 @@ const saveImage = _ => {
     log();
 };
 
-addEventListener(保存, 'click', saveImage);
+addEventListener(save_pic, 'click', saveImage);
+// 按钮保存图片 *******************************************************
 
+
+// 关闭按钮被点击时候关闭 **********************************************
 addEventListener(output_image.querySelector('a'), 'click', _ => {
     outputImageStyle.display = 'none'
 });
+// 关闭按钮被点击时候关闭 **********************************************
