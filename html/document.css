@@ -117,7 +117,7 @@ footer a.按钮 {
   margin-left: 12px;
 }
 
-#输出图像 {
+#output_image {
   display: flex;
   position: fixed;
   top: 0;
@@ -133,7 +133,7 @@ footer a.按钮 {
   align-items: center;
 }
 
-#输出图像 img {
+#output_image img {
   display: block;
   width: 480px;
   height: 480px;
@@ -141,7 +141,7 @@ footer a.按钮 {
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
-#输出图像 .按钮 {
+#output_image .按钮 {
   padding: 8px 12px;
   box-shadow: 0 0 0 2px #111;
 }
@@ -187,7 +187,7 @@ footer a.按钮 {
     bottom: 50px;
   }
 
-  #输出图像 img {
+  #output_image img {
     width: 100vw;
     height: 100vw;
   }

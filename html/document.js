@@ -22,17 +22,8 @@ const saveLevels = _ => {
     localStorage.setItem(localStorageLevelKey, getAllChildrenBlockLevels().join(''));
 };
 
-const 省等级们正则 = /^\d{9}$/;
-const 获取等级们并生效 = _ => {
-    const levelsString = localStorage.getItem(localStorageLevelKey);
-    if (!省等级们正则.test(levelsString)) return;
-    const levels = levelsString.split('');
-    getAllChildrenBlocks().forEach((element, index) => {
-        element.setAttribute('level', levels[index])
-    })
-};
 const graph = bodyElement.children[0];
-const 设置等级样式 = 设置等级.style;
+const setLevelStyle = 设置等级.style;
 const minGap = 6;
 
 // 点击每个block的时候
@@ -40,51 +31,56 @@ addEventListener(地区, 'click', event => {
     event.stopPropagation();
 
     const { target: childElement } = event;
+    // get block location
     const childElementLecation = getElementLocation(childElement);
     const { id } = childElement;
     data.childElement = childElement;
     data.id = id;
 
     setLevelTitle.innerHTML = id;
-    设置等级样式.display = 'block';
+    setLevelStyle.display = 'block';
     // 小弹窗的位置
     const setLevelElementLocation = getElementLocation(设置等级);
 
-    let 左 = Math.round(rootElement.scrollLeft + childElementLecation.left + childElementLecation.width / 2 - setLevelElementLocation.width / 2);
-    左 = Math.min(
-        左,
+    let x = Math.round(rootElement.scrollLeft + childElementLecation.left + childElementLecation.width / 2 - setLevelElementLocation.width / 2);
+    x = Math.min(
+        x,
         bodyElement.offsetWidth - setLevelElementLocation.width - minGap
     );
-    左 = Math.max(
-        左,
+    x = Math.max(
+        x,
         minGap
     );
+    // console.log(x);
 
-    let 上 = Math.round(rootElement.scrollTop + childElementLecation.top + childElementLecation.height / 2 - setLevelElementLocation.height / 2);
-    上 = Math.min(
-        上,
+    let y = Math.round(rootElement.scrollTop + childElementLecation.top + childElementLecation.height / 2 - setLevelElementLocation.height / 2);
+    y = Math.min(
+        y,
         bodyElement.offsetHeight - setLevelElementLocation.height - minGap
     );
-    上 = Math.max(
-        上,
+    y = Math.max(
+        y,
         minGap
     );
+    // console.log(y);
 
-    设置等级样式.left = 左 + 'px';
-    设置等级样式.top = 上 + 'px';
+    setLevelStyle.left = x + 'px';
+    setLevelStyle.top = y + 'px';
 });
 
 
 // 在level弹窗展示的时候/或者不展示，点击别的地方就会把弹窗关掉。
 const closeLevelWindow = _ => {
-    设置等级样式.display = '';
+    setLevelStyle.display = '';
 };
 addEventListener(document, 'click', closeLevelWindow);
-const 计分 = _ => {
-    const 分 = getAllChildrenBlockLevels().reduce((全, 当前) => {
-        return +全 + 当前;
+
+// add the new current score
+const computeScore = _ => {
+    const score = getAllChildrenBlockLevels().reduce((before, current) => {
+        return before + current;
     }, 0);
-    分数.innerHTML = `分数: ${分}`;
+    分数.innerHTML = `分数: ${score}`;
 }
 
 // 在level弹窗展示的时候，点击，可以设置level。
@@ -95,13 +91,27 @@ addEventListener(设置等级, 'click', event => {
     const level = event.target.getAttribute('data-level');
     if (!level) return false;
     data.childElement.setAttribute('level', level);
-    计分();
+    computeScore();
     closeLevelWindow();
     saveLevels();
 })
 
-获取等级们并生效();
-计分();
+const blockLevelRegex = /^\d{9}$/;
+const getLevelsAndExecute = _ => {
+    // a string like '223232443', each means a level number
+    const levelsString = localStorage.getItem(localStorageLevelKey);
+    // check length
+    if (!blockLevelRegex.test(levelsString)) return;
+    // split and become level array
+    const levels = levelsString.split('');
+    // for eache block, set level and of course the color will be set
+    getAllChildrenBlocks().forEach((element, index) => {
+        element.setAttribute('level', levels[index])
+    })
+};
+
+getLevelsAndExecute();
+computeScore();
 
 const 读文件成地址 = (originalData, recall) => {
     const 读 = new FileReader();
@@ -156,7 +166,7 @@ const 地址变图像元素 = (address, recall) => {
 };
 const log = _ => (newAnImage()).src = `https://lab.magiconch.com/api/china-ex/log?levels=${getAllChildrenBlockLevels().join('')}`;
 
-const outputImageStyle = 输出图像.style;
+const outputImageStyle = output_image.style;
 const saveImage = _ => {
     rootElement.setAttribute('data-running', 'true');
 
@@ -177,13 +187,13 @@ const saveImage = _ => {
             0, (width - height) * ratio / 2,
             width * ratio, height * ratio
         );
-        canvas.toBlob(元素数据 => {
-            const address = URL.createObjectURL(元素数据);
-            输出图像.querySelector('img').src = address;
+        canvas.toBlob(elementData => {
+            const address = URL.createObjectURL(elementData);
+            output_image.querySelector('img').src = address;
             outputImageStyle.display = '';
 
             setTimeout(_ => {
-                downloadFile(address, `[福建制霸]${+new Date()}.png`);
+                downloadFile(address, `[编程语言制霸]${+new Date()}.png`);
                 rootElement.removeAttribute('data-running');
             }, 50)
         }, 'image/png');
@@ -193,6 +203,6 @@ const saveImage = _ => {
 
 addEventListener(保存, 'click', saveImage);
 
-addEventListener(输出图像.querySelector('a'), 'click', _ => {
+addEventListener(output_image.querySelector('a'), 'click', _ => {
     outputImageStyle.display = 'none'
 });
