@@ -4,21 +4,15 @@ const head = document.head;
 
 const newAnElement = name => document.createElement(name);
 const newAnImage = _ => new Image();
-
 const addListener = (element, event, recall) => element[`on${event}`] = recall;// element.addListener(event,recall);
 
 const data = {};
 
-
-const getBlockList = _ => [...blocks.children];
-const getBlockLevelList = _ => getBlockList().map(element => +element.getAttribute('level') || 0);
-
-
+// when block is clicked *******************
 const setLevelTitle = set_level.children[0];
 const setLevelStyle = set_level.style;
-const minGap = 6;
+const minimumGap = 6;
 
-// when block is clicked
 const getLocation = element => element.getBoundingClientRect();
 addListener(blocks, 'click', event => {
     event.stopPropagation();
@@ -38,16 +32,16 @@ addListener(blocks, 'click', event => {
     let x = Math.round(root.scrollLeft + childElementLocation.left + childElementLocation.width / 2 - levelLocation.width / 2);
     x = Math.min(
         x,
-        body.offsetWidth - levelLocation.width - minGap
+        body.offsetWidth - levelLocation.width - minimumGap
     );
-    x = Math.max(x, minGap);
+    x = Math.max(x, minimumGap);
 
     let y = Math.round(root.scrollTop + childElementLocation.top + childElementLocation.height / 2 - levelLocation.height / 2);
     y = Math.min(
         y,
-        body.offsetHeight - levelLocation.height - minGap
+        body.offsetHeight - levelLocation.height - minimumGap
     );
-    y = Math.max(y, minGap);
+    y = Math.max(y, minimumGap);
 
     setLevelStyle.left = x + 'px';
     setLevelStyle.top = y + 'px';
@@ -55,6 +49,9 @@ addListener(blocks, 'click', event => {
 
 
 // add the new current score
+const getBlockList = _ => [...blocks.children];
+const getBlockLevelList = _ => getBlockList().map(element => +element.getAttribute('level') || 0);
+
 const computeScore = _ => {
     const score = getBlockLevelList().reduce((before, current) => {
         return before + current;
