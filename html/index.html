@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-Hans" data-loading>
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,109 +9,137 @@
 	<meta name="description" content="福建城市制霸标记生成工具">
 	<link rel="stylesheet" href="document.css?v=a">
 </head>
+
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1134 976">
-<style></style>
-<style>
-text{
-	font-family: slice,sans-serif;
-	fill:#111;
-	font-size:30px;
-}
-#标题,
-#分数{font-size:60px;}
-.fs24{font-size:24px;}
-#地区 path,
-#曾母暗沙,
-.边框{
-    fill-rule:evenodd;
-    clip-rule:evenodd;
-    stroke:#000;
-    stroke-width:4;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-}
-#地区 path{
-    fill:#FFF;
-    cursor: pointer;
-    pointer-events: auto;
-}
-#曾母暗沙,
-.边框{fill:none;}
-#地区 path[level="5"]{fill:#FF7E7E;}
-#地区 path[level="4"]{fill:#FFB57E;}
-#地区 path[level="3"]{fill:#FFE57E;}
-#地区 path[level="2"]{fill:#A8FFBE;}
-#地区 path[level="1"]{fill:#88AEFF;}
-</style>
-<text x="425" y="119" id="标题">福建制霸</text>
-<g id="地区">
-  <path id="龙岩" d="M271.5,397.02h182.13v180.38h-182.13Z" />
-  <path id="三明" d="M390.54,286.18h202.48v200.53h-202.48Z" />
-  <path id="漳州" d="M321.35,542.12h182.13v180.38h-182.13Z" />
-  <path id="南平" d="M492.28,196.5h202.48v200.53h-202.48Z" />
-  <path id="福州" d="M553.32,346.64h161.78v160.22h-161.78Z" />
-  <path id="宁德" d="M655.06,267.04h141.44v140.07h-141.44Z" />
-  <path id="泉州" d="M434.29,468.57h161.79v160.22h-161.79Z" />
-  <path id="厦门" d="M451.58,592.51h100.74v99.76h-100.74Z" />
-  <path id="莆田" d="M573.67,457.48h121.09v119.92h-121.09Z" />
-</g>
-<g id="地名">
-  <text x="311" y="482">龙岩</text>
-  <text x="414" y="368">三明</text>
-  <text x="371" y="631">漳州</text>
-  <text x="566" y="278">南平</text>
-  <text x="487" y="548">泉州</text>
-  <text x="474" y="659">厦门</text>
-  <text x="606" y="530">莆田</text>
-  <text x="606" y="426">福州</text>
-  <text x="698" y="334">宁德</text>
-</g>
-<text id="分数" x="35" y="883">分数</text>
-<g id="等级">
-	<path fill="#FF7E7E" d="M983 450h120v50H983Z"/>
-	<path fill="#FFB57E" d="M983 500h120v50H983Z"/>
-	<path fill="#FFE57E" d="M983 550h120v50H983Z"/>
-	<path fill="#A8FFBE" d="M983 600h120v50H983Z"/>
-	<path fill="#88AEFF" d="M983 650h120v50H983Z"/>
-	<path fill="#FFF" d="M983 700h120v50H983Z"/>
-	<path class="边框" d="M983 450h120v300H983Z"/>
-	<text x="1000" y="484">居住５</text>
-	<text x="1000" y="535">短居４</text>
-	<text x="1000" y="585">游玩３</text>
-	<text x="1000" y="635">出差２</text>
-	<text x="1000" y="685">路过１</text>
-	<text x="998" y="735">没去过</text>
-</g>
-</svg>
-<div id="设置等级">
-    <h2>地区</h2>
-    <a data-level="5">居住</a>
-    <a data-level="4">短居</a>
-    <a data-level="3">游玩</a>
-    <a data-level="2">出差</a>
-    <a data-level="1">路过</a>
-    <a data-level="0">没去过</a>
-</div>
-<footer>
-  <a href="https://github.com/itorr/china-ex" target="_blank">原项目</a>
-	<a href="https://weibo.com/1197780522/MaCGDCt6N" target="_blank">原作者</a>
-	<a href="https://weibo.com/kopxuanzi" target="_blank">weibo</a>
-	<a href="https://github.com/action-hong/china-ex" target="_blank">GitHub</a>
-	<a id="保存" class="按钮">保存成图片</a>
-</footer>
-<div id="输出图像" style="display: none;">
-	<div>
-		<img>
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1134 976">
+		<style></style>
+		<style>
+			text {
+				font-family: slice, sans-serif;
+				fill: #111;
+				font-size: 30px;
+			}
+
+			#标题,
+			#分数 {
+				font-size: 60px;
+			}
+
+			.fs24 {
+				font-size: 24px;
+			}
+
+			#地区 path,
+			#曾母暗沙,
+			.边框 {
+				fill-rule: evenodd;
+				clip-rule: evenodd;
+				stroke: #000;
+				stroke-width: 4;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+			}
+
+			#地区 path {
+				fill: #FFF;
+				cursor: pointer;
+				pointer-events: auto;
+			}
+
+			#曾母暗沙,
+			.边框 {
+				fill: none;
+			}
+
+			#地区 path[level="5"] {
+				fill: #FF7E7E;
+			}
+
+			#地区 path[level="4"] {
+				fill: #FFB57E;
+			}
+
+			#地区 path[level="3"] {
+				fill: #FFE57E;
+			}
+
+			#地区 path[level="2"] {
+				fill: #A8FFBE;
+			}
+
+			#地区 path[level="1"] {
+				fill: #88AEFF;
+			}
+		</style>
+		<text x="425" y="119" id="标题">福建制霸</text>
+		<g id="地区">
+			<path id="龙岩" d="M271.5,397.02h182.13v180.38h-182.13Z" />
+			<path id="三明" d="M390.54,286.18h202.48v200.53h-202.48Z" />
+			<path id="漳州" d="M321.35,542.12h182.13v180.38h-182.13Z" />
+			<path id="南平" d="M492.28,196.5h202.48v200.53h-202.48Z" />
+			<path id="福州" d="M553.32,346.64h161.78v160.22h-161.78Z" />
+			<path id="宁德" d="M655.06,267.04h141.44v140.07h-141.44Z" />
+			<path id="泉州" d="M434.29,468.57h161.79v160.22h-161.79Z" />
+			<path id="厦门" d="M451.58,592.51h100.74v99.76h-100.74Z" />
+			<path id="莆田" d="M573.67,457.48h121.09v119.92h-121.09Z" />
+		</g>
+		<g id="地名">
+			<text x="311" y="482">龙岩</text>
+			<text x="414" y="368">三明</text>
+			<text x="371" y="631">漳州</text>
+			<text x="566" y="278">南平</text>
+			<text x="487" y="548">泉州</text>
+			<text x="474" y="659">厦门</text>
+			<text x="606" y="530">莆田</text>
+			<text x="606" y="426">福州</text>
+			<text x="698" y="334">宁德</text>
+		</g>
+		<text id="分数" x="35" y="883">分数</text>
+		<g id="等级">
+			<path fill="#FF7E7E" d="M983 450h120v50H983Z" />
+			<path fill="#FFB57E" d="M983 500h120v50H983Z" />
+			<path fill="#FFE57E" d="M983 550h120v50H983Z" />
+			<path fill="#A8FFBE" d="M983 600h120v50H983Z" />
+			<path fill="#88AEFF" d="M983 650h120v50H983Z" />
+			<path fill="#FFF" d="M983 700h120v50H983Z" />
+			<path class="边框" d="M983 450h120v300H983Z" />
+			<text x="1000" y="484">居住５</text>
+			<text x="1000" y="535">短居４</text>
+			<text x="1000" y="585">游玩３</text>
+			<text x="1000" y="635">出差２</text>
+			<text x="1000" y="685">路过１</text>
+			<text x="998" y="735">没去过</text>
+		</g>
+	</svg>
+	<div id="设置等级">
+		<h2>地区</h2>
+		<a data-level="5">居住</a>
+		<a data-level="4">短居</a>
+		<a data-level="3">游玩</a>
+		<a data-level="2">出差</a>
+		<a data-level="1">路过</a>
+		<a data-level="0">没去过</a>
 	</div>
-	<p>
-		手机端可长按图片
-		<b>“添加到照片”</b>
-	</p>
-	<div>
-		<a class="按钮">关闭</a>
+	<footer>
+		<a href="https://github.com/itorr/china-ex" target="_blank">原项目</a>
+		<a href="https://weibo.com/1197780522/MaCGDCt6N" target="_blank">原作者</a>
+		<a href="https://weibo.com/kopxuanzi" target="_blank">weibo</a>
+		<a href="https://github.com/action-hong/china-ex" target="_blank">GitHub</a>
+		<a id="保存" class="按钮">保存成图片</a>
+	</footer>
+	<div id="输出图像" style="display: none;">
+		<div>
+			<img>
+		</div>
+		<p>
+			手机端可长按图片
+			<b>“添加到照片”</b>
+		</p>
+		<div>
+			<a class="按钮">关闭</a>
+		</div>
 	</div>
-</div>
-<script src="document.js?v=a"></script>
+	<script src="document.js?v=a"></script>
 </body>
+
 </html>
