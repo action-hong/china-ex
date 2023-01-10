@@ -10,11 +10,10 @@ const addEventListener = (element, event, recall) => element[`on${event}`] = rec
 const getElementLocation = element => element.getBoundingClientRect();
 
 // `设置等级`是那个点击block出来的弹窗
-const 设置等级标题 = 设置等级.children[0];
+const setLevelTitle = 设置等级.children[0];
 
-const closeAll = _ => {
-    设置等级样式.display = '';
-};
+
+
 const data = {};
 const getAllChildrenBlocks = _ => [...地区.children];
 const getAllChildrenBlockLevels = _ => getAllChildrenBlocks().map(element => +element.getAttribute('level') || 0);
@@ -34,7 +33,9 @@ const 获取等级们并生效 = _ => {
 };
 const graph = bodyElement.children[0];
 const 设置等级样式 = 设置等级.style;
-const 最小间距 = 6;
+const minGap = 6;
+
+// 点击每个block的时候
 addEventListener(地区, 'click', event => {
     event.stopPropagation();
 
@@ -44,47 +45,58 @@ addEventListener(地区, 'click', event => {
     data.childElement = childElement;
     data.id = id;
 
-    设置等级标题.innerHTML = id;
+    setLevelTitle.innerHTML = id;
     设置等级样式.display = 'block';
-    const 设置等级元素方位 = getElementLocation(设置等级);
+    // 小弹窗的位置
+    const setLevelElementLocation = getElementLocation(设置等级);
 
-    let 左 = Math.round(rootElement.scrollLeft + childElementLecation.left + childElementLecation.width / 2 - 设置等级元素方位.width / 2);
+    let 左 = Math.round(rootElement.scrollLeft + childElementLecation.left + childElementLecation.width / 2 - setLevelElementLocation.width / 2);
     左 = Math.min(
         左,
-        bodyElement.offsetWidth - 设置等级元素方位.width - 最小间距
+        bodyElement.offsetWidth - setLevelElementLocation.width - minGap
     );
     左 = Math.max(
         左,
-        最小间距
+        minGap
     );
 
-    let 上 = Math.round(rootElement.scrollTop + childElementLecation.top + childElementLecation.height / 2 - 设置等级元素方位.height / 2);
+    let 上 = Math.round(rootElement.scrollTop + childElementLecation.top + childElementLecation.height / 2 - setLevelElementLocation.height / 2);
     上 = Math.min(
         上,
-        bodyElement.offsetHeight - 设置等级元素方位.height - 最小间距
+        bodyElement.offsetHeight - setLevelElementLocation.height - minGap
     );
     上 = Math.max(
         上,
-        最小间距
+        minGap
     );
 
     设置等级样式.left = 左 + 'px';
     设置等级样式.top = 上 + 'px';
 });
-addEventListener(document, 'click', closeAll);
+
+
+// 在level弹窗展示的时候/或者不展示，点击别的地方就会把弹窗关掉。
+const closeLevelWindow = _ => {
+    设置等级样式.display = '';
+};
+addEventListener(document, 'click', closeLevelWindow);
 const 计分 = _ => {
     const 分 = getAllChildrenBlockLevels().reduce((全, 当前) => {
         return +全 + 当前;
     }, 0);
     分数.innerHTML = `分数: ${分}`;
 }
+
+// 在level弹窗展示的时候，点击，可以设置level。
+// 设置完了计分，关闭弹窗，保存level
 addEventListener(设置等级, 'click', event => {
+    // 阻止事件冒泡到父元素
     event.stopPropagation();
     const level = event.target.getAttribute('data-level');
     if (!level) return false;
     data.childElement.setAttribute('level', level);
     计分();
-    closeAll();
+    closeLevelWindow();
     saveLevels();
 })
 
@@ -144,8 +156,8 @@ const 地址变图像元素 = (address, recall) => {
 };
 const log = _ => (newAnImage()).src = `https://lab.magiconch.com/api/china-ex/log?levels=${getAllChildrenBlockLevels().join('')}`;
 
-const 输出图像样式 = 输出图像.style;
-const 保存图像 = _ => {
+const outputImageStyle = 输出图像.style;
+const saveImage = _ => {
     rootElement.setAttribute('data-running', 'true');
 
     const text = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}px" height="${height}px">${graph.innerHTML}</svg>`;
@@ -168,7 +180,7 @@ const 保存图像 = _ => {
         canvas.toBlob(元素数据 => {
             const address = URL.createObjectURL(元素数据);
             输出图像.querySelector('img').src = address;
-            输出图像样式.display = '';
+            outputImageStyle.display = '';
 
             setTimeout(_ => {
                 downloadFile(address, `[福建制霸]${+new Date()}.png`);
@@ -179,8 +191,8 @@ const 保存图像 = _ => {
     log();
 };
 
-addEventListener(保存, 'click', 保存图像);
+addEventListener(保存, 'click', saveImage);
 
 addEventListener(输出图像.querySelector('a'), 'click', _ => {
-    输出图像样式.display = 'none'
+    outputImageStyle.display = 'none'
 });
