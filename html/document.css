@@ -67,6 +67,17 @@ a {
   padding: 4px 10px;
 }
 
+#set_level h2[data-level="7"],
+#set_level a[data-level="7"] {
+  background: #cb7eff;
+}
+
+#set_level h2[data-level="6"],
+#set_level a[data-level="6"] {
+  background: #ff7eda;
+}
+
+
 #set_level h2[data-level="5"],
 #set_level a[data-level="5"] {
   background: #FF7E7E;

@@ -129,6 +129,7 @@ const getFontDataAddress = (address, recall) => {
         .then(originalData => readAddressFromFile(originalData, recall));
 };
 
+// fontName = 'slice'
 const getFontStyle = (fontName, recall) => {
     getFontDataAddress(`${fontName}.woff?v=a`, address => recall(`@font-face {
         font-family: ${fontName};
@@ -187,6 +188,7 @@ const downloadFile = (link, fileName, element = newAnElement('a')) => {
 };
 
 const saveImage = _ => {
+    // set state to 'running'
     root.setAttribute('data-running', 'true');
 
     const text =
@@ -212,7 +214,7 @@ const saveImage = _ => {
 
             setTimeout(_ => {
                 downloadFile(link, `[编程语言制霸]${+new Date()}.png`);
-                root.removeAttribute('data-running');
+                root.removeAttribute('data-running'); // end, set 'running' to false
             }, 50)
         }, 'image/png');
     });

@@ -54,6 +54,14 @@
 			}
 
 			/* label color */
+			#blocks path[level="7"] {
+				fill: #cb7eff;
+			}
+
+			#blocks path[level="6"] {
+				fill: #ff7eda;
+			}
+
 			#blocks path[level="5"] {
 				fill: #FF7E7E;
 			}
@@ -99,13 +107,17 @@
 		</g>
 		<text id="分数" x="35" y="883">分数</text>
 		<g id="等级">
+			<path fill="#cb7eff" d="M983 350h120v50H983Z" />
+			<path fill="#ff7eda" d="M983 400h120v50H983Z" />
 			<path fill="#FF7E7E" d="M983 450h120v50H983Z" />
 			<path fill="#FFB57E" d="M983 500h120v50H983Z" />
 			<path fill="#FFE57E" d="M983 550h120v50H983Z" />
 			<path fill="#A8FFBE" d="M983 600h120v50H983Z" />
 			<path fill="#88AEFF" d="M983 650h120v50H983Z" />
 			<path fill="#FFF" d="M983 700h120v50H983Z" />
-			<path class="边框" d="M983 450h120v300H983Z" />
+			<path class="边框" d="M983 350h120v400H983Z" />
+			<text x="1000" y="385">居住 7</text>
+			<text x="1000" y="435">居住 6</text>
 			<text x="1000" y="484">居住５</text>
 			<text x="1000" y="535">短居４</text>
 			<text x="1000" y="585">游玩３</text>
@@ -116,6 +128,8 @@
 	</svg>
 	<div id="set_level">
 		<h2>blocks</h2>
+		<a data-level="7">讨厌</a>
+		<a data-level="6">喜欢</a>
 		<a data-level="5">居住</a>
 		<a data-level="4">短居</a>
 		<a data-level="3">游玩</a>
