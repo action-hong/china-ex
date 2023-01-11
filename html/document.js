@@ -4,11 +4,11 @@ const head = document.head;
 
 const newAnElement = name => document.createElement(name);
 const newAnImage = _ => new Image();
-const addListener = (element, event, recall) => element[`on${event}`] = recall;// element.addListener(event,recall);
+const addListener = (element, event, recall) => element[`on${event}`] = recall;
 
 const data = {};
 
-// when block is clicked, show level window *********************************
+// when block is clicked, show level window ************************************
 const setLevelTitle = set_level.children[0];
 const setLevelStyle = set_level.style;
 const minimumGap = 6;
@@ -29,14 +29,20 @@ addListener(blocks, 'click', event => {
     // level window place
     const levelLocation = getLocation(set_level);
 
-    let x = Math.round(root.scrollLeft + childElementLocation.left + childElementLocation.width / 2 - levelLocation.width / 2);
+    let x = Math.round(
+        root.scrollLeft + childElementLocation.left
+        + childElementLocation.width / 2 - levelLocation.width / 2
+    );
     x = Math.min(
         x,
         body.offsetWidth - levelLocation.width - minimumGap
     );
     x = Math.max(x, minimumGap);
 
-    let y = Math.round(root.scrollTop + childElementLocation.top + childElementLocation.height / 2 - levelLocation.height / 2);
+    let y = Math.round(
+        root.scrollTop + childElementLocation.top
+        + childElementLocation.height / 2 - levelLocation.height / 2
+    );
     y = Math.min(
         y,
         body.offsetHeight - levelLocation.height - minimumGap
@@ -48,7 +54,7 @@ addListener(blocks, 'click', event => {
 });
 
 
-// when level window showing, click other place to close it. *****************
+// when level window showing, click other place to close it. ******************
 const closeLevelWindow = _ => {
     setLevelStyle.display = '';
 };
@@ -58,7 +64,8 @@ addListener(document, 'click', closeLevelWindow);
 // when level window is showing, click it to set level. ***********************
 // add the new current score
 const getBlockList = _ => [...blocks.children];
-const getBlockLevelList = _ => getBlockList().map(element => +element.getAttribute('level') || 0);
+const getBlockLevelList = _ =>
+    getBlockList().map(element => + element.getAttribute('level') || 0);
 
 const computeScore = _ => {
     const score = getBlockLevelList().reduce((before, current) => {
@@ -117,7 +124,9 @@ const readAddressFromFile = (originalData, recall) => {
 };
 
 const getFontDataAddress = (address, recall) => {
-    fetch(address).then(resource => resource.blob()).then(originalData => readAddressFromFile(originalData, recall));
+    fetch(address)
+        .then(resource => resource.blob())
+        .then(originalData => readAddressFromFile(originalData, recall));
 };
 
 const getFontStyle = (fontName, recall) => {
@@ -144,7 +153,9 @@ const width = 1134;
 const height = 976;
 const ratio = 2;
 
-const log = _ => (newAnImage()).src = `https://lab.magiconch.com/api/china-ex/log?levels=${getBlockLevelList().join('')}`;
+const log = _ =>
+    (newAnImage()).
+        src = `https://lab.magiconch.com/api/china-ex/log?levels=${getBlockLevelList().join('')}`;
 
 const outputImageStyle = output_image.style;
 
@@ -178,7 +189,8 @@ const downloadFile = (link, fileName, element = newAnElement('a')) => {
 const saveImage = _ => {
     root.setAttribute('data-running', 'true');
 
-    const text = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}px" height="${height}px">${svgGraph.innerHTML}</svg>`;
+    const text =
+        `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}px" height="${height}px">${svgGraph.innerHTML}</svg>`;
     const dataAddress = newImageFromText(text);
     addressToImageElement(dataAddress, image => {
         context.fillStyle = '#efb4b4';
