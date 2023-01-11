@@ -8,7 +8,7 @@ const addListener = (element, event, recall) => element[`on${event}`] = recall;/
 
 const data = {};
 
-// when block is clicked *******************
+// when block is clicked, show level window *********************************
 const setLevelTitle = set_level.children[0];
 const setLevelStyle = set_level.style;
 const minimumGap = 6;
@@ -48,6 +48,14 @@ addListener(blocks, 'click', event => {
 });
 
 
+// when level window showing, click other place to close it. *****************
+const closeLevelWindow = _ => {
+    setLevelStyle.display = '';
+};
+addListener(document, 'click', closeLevelWindow);
+
+
+// when level window is showing, click it to set level. ***********************
 // add the new current score
 const getBlockList = _ => [...blocks.children];
 const getBlockLevelList = _ => getBlockList().map(element => +element.getAttribute('level') || 0);
@@ -59,19 +67,12 @@ const computeScore = _ => {
     分数.innerHTML = `分数: ${score}`;
 }
 
-// when level window showing, click other place to close it.
-const closeLevelWindow = _ => {
-    setLevelStyle.display = '';
-};
-addListener(document, 'click', closeLevelWindow);
-
 // key to level info, saved locally
 const localStorageLevelKey = 'language-ex-levels';
 const saveLevels = _ => {
     localStorage.setItem(localStorageLevelKey, getBlockLevelList().join(''));
 };
 
-// when level window is showing, click to set level.
 // then close the window and save level
 addListener(set_level, 'click', event => {
     // keep event from parent element
@@ -87,6 +88,8 @@ addListener(set_level, 'click', event => {
     saveLevels();
 })
 
+
+// when html loaded, compute the score *****************************************
 const blockLevelRegex = /^\d{9}$/;
 const getLevelsAndExecute = _ => {
     // a string like '223232443', each means a level number
@@ -105,7 +108,8 @@ const getLevelsAndExecute = _ => {
 getLevelsAndExecute();
 computeScore();
 
-/* ********************************* */
+
+// get font *********************************************************************
 const readAddressFromFile = (originalData, recall) => {
     const fileReader = new FileReader();
     fileReader.onload = event => recall(event.target.result);
@@ -132,7 +136,9 @@ getFontStyle('slice', styleString => {
     head.appendChild(style);
     setTimeout(_ => root.removeAttribute('data-loading'), 2e3);
 });
-/* ********************************* */
+
+
+// save image button *******************************************************
 
 const width = 1134;
 const height = 976;
@@ -140,7 +146,6 @@ const ratio = 2;
 
 const log = _ => (newAnImage()).src = `https://lab.magiconch.com/api/china-ex/log?levels=${getBlockLevelList().join('')}`;
 
-// 按钮保存图片 *******************************************************
 const outputImageStyle = output_image.style;
 
 const canvas = newAnElement('canvas');
@@ -203,11 +208,9 @@ const saveImage = _ => {
 };
 
 addListener(save_pic, 'click', saveImage);
-// 按钮保存图片 *******************************************************
 
 
-// 关闭按钮被点击时候关闭保存图片窗口 ***********************************
+// close window button ***********************************
 addListener(output_image.querySelector('a'), 'click', _ => {
     outputImageStyle.display = 'none'
 });
-// 关闭按钮被点击时候关闭保存图片窗口 ***********************************
