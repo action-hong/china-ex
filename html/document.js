@@ -1,187 +1,230 @@
-const 本地存储 = localStorage;
-const 视窗 = window;
-const 文档 = document;
-const 如何做爱元素 = 文档.documentElement;
-const 体元素 = 文档.body;
-const 头元素 = 文档.head;
-const 新建元素 = 名 => 文档.createElement(名);
-const 新建图 = _=> new Image();
-const 添加事件监控 = (元素,事件,回调) => 元素[`on${事件}`] = 回调;// 元素.addEventListener(事件,回调);
-const 获取元素方位 = 元素 => 元素.getBoundingClientRect();
-const 设置延时 = setTimeout;
-const 数学 = Math;
-const 点击 = 'click';
+const root = document.documentElement;
+const body = document.body;
+const head = document.head;
 
-const 设置等级标题 = 设置等级.children[0];
+const newAnElement = name => document.createElement(name);
+const newAnImage = _ => new Image();
+const addListener = (element, event, recall) => element[`on${event}`] = recall;
 
-const 全关闭 = _=>{
-    设置等级样式.display = '';
-};
-const 数据 = {};
-const 获取所有省元素们 = _=>[...地区.children];
-const 获取所有省等级们 = _=>获取所有省元素们().map(元素=>+元素.getAttribute('level')||0);
-const 本地存储等级们钥匙 = 'china-ex-levels';
-const 保存等级们 = _=>{
-    本地存储.setItem(本地存储等级们钥匙,获取所有省等级们().join(''));
-};
-const 省等级们正则 = /^\d{9}$/;
-const 获取等级们并生效 = _=>{
-    const 等级们字串 = 本地存储.getItem(本地存储等级们钥匙);
-    if(!省等级们正则.test(等级们字串)) return;
-    const 等级们 = 等级们字串.split('');
-    获取所有省元素们().forEach((元素,下标)=>{
-        元素.setAttribute('level',等级们[下标])
-    })
-};
-const 图形 = 体元素.children[0];
-const 设置等级样式 = 设置等级.style;
-const 最小间距 = 6;
-添加事件监控(地区, 点击, 事件=>{
-    事件.stopPropagation();
+const data = {};
 
-    const { target: 省元素 } = 事件;
-    const 省元素方位 = 获取元素方位(省元素);
-    const { id } = 省元素;
-    数据.省元素 = 省元素;
-    数据.id = id;
+// when block is clicked, show level window ************************************
+const setLevelTitle = set_level.children[0];
+const setLevelStyle = set_level.style;
+const minimumGap = 6;
 
-    设置等级标题.innerHTML = id;
-    设置等级样式.display = 'block';
-    const 设置等级元素方位 = 获取元素方位(设置等级);
+const getLocation = element => element.getBoundingClientRect();
+addListener(blocks, 'click', event => {
+    event.stopPropagation();
 
-    let 左 = 数学.round(如何做爱元素.scrollLeft + 省元素方位.left + 省元素方位.width/2 - 设置等级元素方位.width/2);
-    左 = 数学.min(
-        左,
-        体元素.offsetWidth - 设置等级元素方位.width - 最小间距
+    const { target: childElement } = event;
+    // get block location
+    const childElementLocation = getLocation(childElement);
+    const { id } = childElement;
+    data.childElement = childElement;
+    data.id = id;
+
+    setLevelTitle.innerHTML = id;
+    setLevelStyle.display = 'block';
+    // level window place
+    const levelLocation = getLocation(set_level);
+
+    let x = Math.round(
+        root.scrollLeft + childElementLocation.left
+        + childElementLocation.width / 2 - levelLocation.width / 2
     );
-    左 = 数学.max(
-        左,
-        最小间距
+    x = Math.min(
+        x,
+        body.offsetWidth - levelLocation.width - minimumGap
     );
+    x = Math.max(x, minimumGap);
 
-    let 上 = 数学.round(如何做爱元素.scrollTop + 省元素方位.top + 省元素方位.height/2 - 设置等级元素方位.height/2);
-    上 = 数学.min(
-        上,
-        体元素.offsetHeight - 设置等级元素方位.height - 最小间距
+    let y = Math.round(
+        root.scrollTop + childElementLocation.top
+        + childElementLocation.height / 2 - levelLocation.height / 2
     );
-    上 = 数学.max(
-        上,
-        最小间距
+    y = Math.min(
+        y,
+        body.offsetHeight - levelLocation.height - minimumGap
     );
+    y = Math.max(y, minimumGap);
 
-    设置等级样式.left = 左 + 'px';
-    设置等级样式.top = 上 + 'px';
+    setLevelStyle.left = x + 'px';
+    setLevelStyle.top = y + 'px';
 });
-添加事件监控(文档,点击,全关闭);
-const 计分 = _=>{
-    const 分 = 获取所有省等级们().reduce((全, 当前) => {
-        return +全 + 当前;
-      }, 0);
-    分数.innerHTML = `分数: ${分}`;
+
+
+// when level window showing, click other place to close it. ******************
+const closeLevelWindow = _ => {
+    setLevelStyle.display = '';
+};
+addListener(document, 'click', closeLevelWindow);
+
+
+// when level window is showing, click it to set level. ***********************
+// add the new current score
+const getBlockList = _ => [...blocks.children];
+const getBlockLevelList = _ =>
+    getBlockList().map(element => + element.getAttribute('level') || 0);
+
+const computeScore = _ => {
+    const score = getBlockLevelList().reduce((before, current) => {
+        return before + current;
+    }, 0);
+    分数.innerHTML = `分数: ${score}`;
 }
-添加事件监控(设置等级,点击,事件=>{
-    事件.stopPropagation();
-    const 等级 = 事件.target.getAttribute('data-level');
-    if(!等级) return false;
-    数据.省元素.setAttribute('level',等级);
-    计分();
-    全关闭();
-    保存等级们();
+
+// key to level info, saved locally
+const localStorageLevelKey = 'language-ex-levels';
+const saveLevels = _ => {
+    localStorage.setItem(localStorageLevelKey, getBlockLevelList().join(''));
+};
+
+// then close the window and save level
+addListener(set_level, 'click', event => {
+    // keep event from parent element
+    event.stopPropagation();
+
+    // find the square user clicked and get its level
+    const level = event.target.getAttribute('data-level');
+    if (!level) return false;
+    data.childElement.setAttribute('level', level);
+
+    computeScore();
+    closeLevelWindow();
+    saveLevels();
 })
 
-获取等级们并生效();
-计分();
 
-const 读文件成地址 = (原始数据,回调)=>{
-    const 读 = new FileReader();
-    读.onload = 事件 => 回调(事件.target.result);
-    读.readAsDataURL(原始数据);
+// when html loaded, compute the score *****************************************
+const blockLevelRegex = /^\d{9}$/;
+const getLevelsAndExecute = _ => {
+    // a string like '223232443', each means a level number
+    const levelString = localStorage.getItem(localStorageLevelKey);
+    // check length
+    if (!blockLevelRegex.test(levelString)) return;
+
+    // split and become level array
+    const levels = levelString.split('');
+    // for each block, set level and of course the color will be set
+    getBlockList().forEach((element, i) => {
+        element.setAttribute('level', levels[i])
+    })
 };
-const 获取字体数据地址 = (地址,回调)=>{
-    fetch(地址).then(资源 => 资源.blob()).then(原始数据 => 读文件成地址(原始数据,回调));
+
+getLevelsAndExecute();
+computeScore();
+
+
+// get font *********************************************************************
+const readAddressFromFile = (originalData, recall) => {
+    const fileReader = new FileReader();
+    fileReader.onload = event => recall(event.target.result);
+    fileReader.readAsDataURL(originalData);
 };
-const 获取字体样式 = (字体名,回调)=>{
-    获取字体数据地址(`${字体名}.woff?v=a`,地址 => 回调(`@font-face {
-        font-family: ${字体名};
-        src: url(${地址});
+
+const getFontDataAddress = (address, recall) => {
+    fetch(address)
+        .then(resource => resource.blob())
+        .then(originalData => readAddressFromFile(originalData, recall));
+};
+
+// fontName = 'slice'
+const getFontStyle = (fontName, recall) => {
+    getFontDataAddress(`${fontName}.woff?v=a`, address => recall(`@font-face {
+        font-family: ${fontName};
+        src: url(${address});
     };`));
 };
-获取字体样式('slice',样式字串=>{
-    图形.querySelector('style').innerHTML = 样式字串;
-    const 样式元素 = 新建元素('style');
-    样式元素.innerHTML = 样式字串;
-    头元素.appendChild(样式元素);
-    设置延时(_=>如何做爱元素.removeAttribute('data-loading'),2e3);
+
+const svgGraph = body.children[0];
+
+getFontStyle('slice', styleString => {
+    svgGraph.querySelector('style').innerHTML = styleString;
+    const style = newAnElement('style');
+    style.innerHTML = styleString;
+    head.appendChild(style);
+    setTimeout(_ => root.removeAttribute('data-loading'), 2e3);
 });
 
-const 宽 = 1134;
-const 高 = 976;
-const 比 = 2;
 
-const 画板 = 新建元素('canvas');
+// save image button *******************************************************
 
-画板.width = 宽 * 比;
-画板.height = 宽 * 比;
+const width = 1134;
+const height = 976;
+const ratio = 2;
 
-const 上下文 = 画板.getContext('2d');
+const log = _ =>
+    (newAnImage()).
+        src = `https://lab.magiconch.com/api/china-ex/log?levels=${getBlockLevelList().join('')}`;
 
-const 从文档文本新建图形文件 = 文档文本=>{
-    const 原始数据 = new Blob([文档文本], {type: 'image/svg+xml'});
-    return URL.createObjectURL(原始数据);
+const outputImageStyle = output_image.style;
+
+const canvas = newAnElement('canvas');
+canvas.width = width * ratio;
+canvas.height = width * ratio;
+const context = canvas.getContext('2d');
+
+// get text and return picture
+const newImageFromText = text => {
+    const originalData = new Blob([text], { type: 'image/svg+xml' });
+    return URL.createObjectURL(originalData);
 };
-const 是社交媒体 = /weibo|qq/i.test(navigator.userAgent);
-// alert(navigator.userAgent)
-const 下载文件 = (链接,文件名,元素 = 新建元素('a'))=>{
-    if(!是社交媒体){
-        元素.download = 文件名;
+
+const addressToImageElement = (address, recall) => {
+    const image = newAnImage();
+    addListener(image, 'load', _ => setTimeout(_ => recall(image), 500));
+    image.src = address;
+};
+
+// download
+const isSocialMedia = /weibo|qq/i.test(navigator.userAgent);
+const downloadFile = (link, fileName, element = newAnElement('a')) => {
+    if (!isSocialMedia) {
+        element.download = fileName;
     }
-    元素.href = 链接;
-    元素.click();
+    element.href = link;
+    element.click();
 };
-const 地址变图像元素 = (地址,回调)=>{
-    const 图 = 新建图();
-    添加事件监控(图,'load',_=>设置延时(_=>回调(图),500));
-    图.src = 地址;
-};
-const 日志 = _=>(新建图()).src = `https://lab.magiconch.com/api/china-ex/log?levels=${获取所有省等级们().join('')}`;
 
-const 输出图像样式 = 输出图像.style;
-const 保存图像 = _=>{
-    如何做爱元素.setAttribute('data-running','true');
+const saveImage = _ => {
+    // set state to 'running'
+    root.setAttribute('data-running', 'true');
 
-    const 文档文本 = `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${宽} ${高}" width="${宽}px" height="${高}px">${图形.innerHTML}</svg>`;
-    const 数据地址 = 从文档文本新建图形文件(文档文本);
-    // open(数据地址);
-    // return ;
-    地址变图像元素(数据地址,图=>{
-        上下文.fillStyle = '#efb4b4';
-        上下文.fillRect(
-            0,0,
-            宽 * 比,宽 * 比
+    const text =
+        `<?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}px" height="${height}px">${svgGraph.innerHTML}</svg>`;
+    const dataAddress = newImageFromText(text);
+    addressToImageElement(dataAddress, image => {
+        context.fillStyle = '#efb4b4';
+        context.fillRect(
+            0, 0,
+            width * ratio, width * ratio
         );
-        上下文.drawImage(
-            图,
-            0,0,
-            宽,高,
-            0,(宽 - 高) * 比 / 2,
-            宽 * 比, 高 * 比
+        context.drawImage(
+            image,
+            0, 0,
+            width, height,
+            0, (width - height) * ratio / 2,
+            width * ratio, height * ratio
         );
-        画板.toBlob(元素数据=>{
-            const 地址 = URL.createObjectURL(元素数据);
-            输出图像.querySelector('img').src = 地址;
-            输出图像样式.display = '';
+        canvas.toBlob(elementData => {
+            const link = URL.createObjectURL(elementData);
+            output_image.querySelector('img').src = link;
+            outputImageStyle.display = '';
 
-            设置延时(_=>{
-                下载文件(地址,`[福建制霸]${+new Date()}.png`);
-                如何做爱元素.removeAttribute('data-running');
-            },50)
-        },'image/png');
+            setTimeout(_ => {
+                downloadFile(link, `[编程语言制霸]${+new Date()}.png`);
+                root.removeAttribute('data-running'); // end, set 'running' to false
+            }, 50)
+        }, 'image/png');
     });
-    日志();
+    log();
 };
 
-添加事件监控(保存, 点击,保存图像);
+addListener(save_pic, 'click', saveImage);
 
-添加事件监控(输出图像.querySelector('a'), 点击,_=>{
-    输出图像样式.display = 'none'
+
+// close window button ***********************************
+addListener(output_image.querySelector('a'), 'click', _ => {
+    outputImageStyle.display = 'none'
 });
